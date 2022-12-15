@@ -1,5 +1,5 @@
 rm(list=ls()); gc()
-#mojn___shitface
+#mojn___shitdik
 ####   DESeq2 analysis   ####
 
 #### Installing needed R-packeages
