@@ -1,0 +1,13 @@
+sample	condition	rep
+dtdaB_rep_1_24_hrs	m_24	1
+dtdaB_rep_1_72_hrs	m_72	1
+dtdaB_rep_2_24_hrs	m_24	2
+dtdaB_rep_2_72_hrs	m_72	2
+dtdaB_rep_3_24_hrs	m_24	3
+dtdaB_rep_3_72_hrs	m_72	3
+wildtype_rep_1_24_hrs	wt_24	1
+wildtype_rep_1_72_hrs	wt_72	1
+wildtype_rep_2_24_hrs	wt_24	2
+wildtype_rep_2_72_hrs	wt_72	2
+wildtype_rep_3_24_hrs	wt_24	3
+wildtype_rep_3_72_hrs	wt_72	3

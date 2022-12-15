@@ -1,0 +1,14 @@
+run
+dtdaB_rep_1_24_hrs
+dtdaB_rep_1_72_hrs
+dtdaB_rep_2_24_hrs
+dtdaB_rep_2_72_hrs
+dtdaB_rep_3_24_hrs
+dtdaB_rep_3_72_hrs
+wildtype_rep_1_24_hrs
+wildtype_rep_1_72_hrs
+wildtype_rep_2_24_hrs
+wildtype_rep_2_72_hrs
+wildtype_rep_3_24_hrs
+wildtype_rep_3_72_hrs
+
