@@ -1,5 +1,5 @@
 rm(list=ls()); gc()
-#mojn
+#mojn___
 ####   DESeq2 analysis   ####
 
 #### Installing needed R-packeages
