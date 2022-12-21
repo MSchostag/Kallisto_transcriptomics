@@ -1,3 +1,3 @@
 # Kallisto_transcriptomics
-
-# setting up the files
+First run 
+## setting up the files
