@@ -1,0 +1,13 @@
+{
+	"n_targets": 4048,
+	"n_bootstraps": 0,
+	"n_processed": 7058701,
+	"n_pseudoaligned": 6491184,
+	"n_unique": 6395611,
+	"p_pseudoaligned": 92.0,
+	"p_unique": 90.6,
+	"kallisto_version": "0.46.2",
+	"index_version": 10,
+	"start_time": "Mon Nov 21 15:23:42 2022",
+	"call": "kallisto quant -i transcripts.idx -o output/wildtype_rep_1_24_hrs -t 20 raw/filtered/SRR20219435_RNAseq_of_Phaeobacter_piscinae_wildtype_rep_1_24_hrs_fw_reads_1_f.fastq.gz raw/filtered/SRR20219435_RNAseq_of_Phaeobacter_piscinae_wildtype_rep_1_24_hrs_fw_reads_2_f.fastq.gz"
+}

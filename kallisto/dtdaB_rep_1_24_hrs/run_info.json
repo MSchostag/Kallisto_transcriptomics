@@ -1,0 +1,13 @@
+{
+	"n_targets": 4048,
+	"n_bootstraps": 0,
+	"n_processed": 7781250,
+	"n_pseudoaligned": 6889981,
+	"n_unique": 6783590,
+	"p_pseudoaligned": 88.5,
+	"p_unique": 87.2,
+	"kallisto_version": "0.46.2",
+	"index_version": 10,
+	"start_time": "Mon Nov 21 15:21:49 2022",
+	"call": "kallisto quant -i transcripts.idx -o output/dtdaB_rep_1_24_hrs -t 20 raw/filtered/SRR20219430_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_24_hrs_fw_reads_1_f.fastq.gz raw/filtered/SRR20219430_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_24_hrs_fw_reads_2_f.fastq.gz"
+}
