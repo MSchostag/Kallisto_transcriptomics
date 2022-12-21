@@ -2,7 +2,7 @@ rm(list=ls()); gc()
 
 ####   DESeq2 analysis   ####
 
-#### Installing needed R-packeages
+#### Installing needed R-packeages ####
 
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
