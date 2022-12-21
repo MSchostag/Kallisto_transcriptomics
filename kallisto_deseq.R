@@ -33,7 +33,7 @@ dir.create(here("data"),showWarnings = F)
 dir <- here()
 list.files(dir) #make sure the right folders appears
 
-samples <- read.table(file.path(dir, "S26samples.txt"), header = TRUE)
+samples <- read.table(file.path(dir, "samples.txt"), header = TRUE)
 samples
 meta <- read.table(file.path(dir, "meta.txt"), header = TRUE)
 meta
@@ -63,14 +63,14 @@ dds <- DESeq(dds_data)
 
 
 
-      ####SizeFactor####
+####SizeFactor####
 
 # https://support.bioconductor.org/p/97676/
 
 nm <- assays(dds)[["avgTxLength"]]
 sf <- estimateSizeFactorsForMatrix(counts(dds) / nm)
 sf
-      ####Results from DeSeq2####
+####Results from DeSeq2####
 
 res <- results(dds)
 res <- res[order(res$padj),]
@@ -82,16 +82,16 @@ number_hits <-  as.data.frame(txi.kallisto$counts)
 
 colSums(number_hits)
 
-      ####PCA plot####
+####PCA plot####
 
 
 vsdata <- vst(dds, blind=FALSE)
 plotPCA(object = vsdata, intgroup="condition") + 
   theme_classic() + 
   geom_point(size=4)
-ggsave(here("figs", "PCA_plot.png"))
+ggsave(here("figs", "PCA_plot.pdf"), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 
-      ####Making contrasts####
+####Making contrasts####
 
 # THIS WHOLE SECTION NEEDS TO ADJUSTED FOR your own ANALYSIS
 
@@ -129,9 +129,9 @@ map2(all_contrast, contrast_names, function(contrast, names){
   write.csv(contrast, here("data", paste0(names, ".csv" )))
   
 })
-    
 
-     ####  Volcano plots  ####
+
+####  Volcano plots  ####
 
 volcano_plots <- all_contrast_filtered %>% 
   ggplot(aes(x = log2FoldChange, y = -log10(padj), col = sig)) +
@@ -140,10 +140,10 @@ volcano_plots <- all_contrast_filtered %>%
   scale_color_manual(values=c("Red", "black", "blue")) +
   facet_wrap(.~contrast)
 # save the figure in figure folder
-ggsave(here("figs", paste0("volcano_plots", ".png")))
+ggsave(here("figs", "volcano_plots.pdf"), dpi = 300, units = "cm", width = 20, height = 20, scale = 1) #### write dimention
 
 
-     #### Plot the gene of interest ####
+#### Plot the gene of interest ####
 
 
 plot_gene <- function(genename){
@@ -162,7 +162,7 @@ plot_gene <- function(genename){
 
 plot_gene("gene-OL67_RS18380") 
 
-      ####  most upregulated  ####
+####  most upregulated  ####
 
 up_sig_list <- all_contrast_filtered %>% 
   group_by(contrast) %>% 
@@ -200,7 +200,7 @@ map2(count_plots_up, pull(distinct(up_sig_list, contrast)), function(x, name) {
     labs(title = paste0("Top 9 Up regulated genes in ", name))  +
     xlab("Group") + 
     ylab("Normalized Count")
-    ggsave(here("figs", paste0("up_regulated_",name, ".png")))
+  ggsave(here("figs", paste0("up_regulated_",name, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
 
 count_plots_down <- map(pull(distinct(down_sig_list, contrast)), function(x){
@@ -226,12 +226,13 @@ map2(count_plots_down, pull(distinct(down_sig_list, contrast)), function(x, name
     ylab("Normalized Count") + 
     xlab("Group") + 
     labs(title = paste0("Top 9 Down regulated genes in ", name))  
-  ggsave(here("figs", paste0("down_regulated_",name, ".png")))
+  ggsave(here("figs", paste0("down_regulated_",name, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
 
 
 
 ####Ipath_analysis####
+# address to ipath
 
 # you would need to type in the filename of the eggnog mapper output file 
 
@@ -318,12 +319,12 @@ cog_tally <- map2(all_contrast_filtered_ipath_ready, contrast_names, function(x,
     mutate(relative = count/total_COG * 100,
            count = ifelse(sig == "down_sig", count*-1, count),
            relative = ifelse(sig == "down_sig", relative*-1, relative))
-    })
+})
 
 
 
 map2(cog_tally, contrast_names, function(x, names){
-    x %>%   
+  x %>%   
     ggplot(aes(fill=sig, x=COG_category, y=relative)) +
     geom_col() + 
     theme_classic() +
@@ -336,7 +337,7 @@ map2(cog_tally, contrast_names, function(x, names){
     ggtitle(paste0("DE COG categories in", " ", names)) +
     theme(plot.title = element_text(hjust = 0.5, face="bold"))
   
-  ggsave(here("figs", paste0("Relative DE COG_categories in",names, ".png")))
+  ggsave(here("figs", paste0("Relative DE COG_categories in",names, ".pdf")),dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
   
   x %>%   
     ggplot(aes(fill=sig, x=COG_category, y=count)) +
@@ -350,29 +351,5 @@ map2(cog_tally, contrast_names, function(x, names){
     ggtitle(paste0("DE COG categories in", " ", names)) +
     theme(plot.title = element_text(hjust = 0.5, face="bold"))
   
-  ggsave(here("figs", paste0("DE COG_categories in",names, ".png")))
+  ggsave(here("figs", paste0("DE COG_categories in",names, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
