@@ -93,7 +93,7 @@ ggsave(here("figs", "PCA_plot.png"))
 
       ####Making contrasts####
 
-# THIS WHOLE SECTION NEEDS TO ADJUSTED FOR EACH ANALYSIS
+# THIS WHOLE SECTION NEEDS TO ADJUSTED FOR your own ANALYSIS
 
 #Mutant 24 h vs Mutant 72 h 
 res_m_24_m_72 <- results(dds, contrast=c("condition","m_24","m_72"), tidy = T)
@@ -105,12 +105,11 @@ res_wt_24_wt_72 <- results(dds, contrast=c("condition","wt_24","wt_72"), tidy = 
 res_m_72_wt_72 <- results(dds, contrast=c("condition","m_72","wt_72"), tidy = T)
 
 
-# 
+# Again you would need to fill in the names of the contrast data.frames and their names in the following two lines
+contrast_list <- list(res_m_24_m_72,res_m_24_wt_24,res_wt_24_wt_72,res_m_72_wt_72)
+contrast_names <- c("Mutant_24 vs Mutant_72","Mutant_24 vs Wildtype_24","Wildtype_24 vs Wildtype_72","Mutant_72 vs Wildtype_72")
 
-contrats_list <- list(res_m_24_m_72,res_m_24_wt_24,res_wt_24_wt_72,res_m_72_wt_72)
-contrats_names <- c("Mutant_24 vs Mutant_72","Mutant_24 vs Wildtype_24","Wildtype_24 vs Wildtype_72","Mutant_72 vs Wildtype_72")
-
-all_contrast <- map2(contrats_list, contrats_names, function(x, name) {
+all_contrast <- map2(contrast_list, contrast_names, function(x, name) {
   x %>% 
     mutate(contrast = name) %>% as_tibble()
 })
@@ -126,7 +125,7 @@ all_contrast_filtered <- do.call("rbind", all_contrast) %>%
   as_tibble()
 
 
-map2(all_contrast, contrats_names, function(contrast, names){
+map2(all_contrast, contrast_names, function(contrast, names){
   write.csv(contrast, here("data", paste0(names, ".csv" )))
   
 })
@@ -289,7 +288,7 @@ genes_to_iPath(all_contrast_filtered_ipath_ready)
 
 # create COG table for each contrast with significant genes + saving table with all data
 
-cog_tally <- map2(all_contrast_filtered_ipath_ready, contrats_names, function(x, names){
+cog_tally <- map2(all_contrast_filtered_ipath_ready, contrast_names, function(x, names){
   cog_tally <- x %>% 
     dplyr::filter(sig =="up_sig" | sig =="down_sig") %>% 
     filter(!is.na(COG_category), 
@@ -323,7 +322,7 @@ cog_tally <- map2(all_contrast_filtered_ipath_ready, contrats_names, function(x,
 
 
 
-map2(cog_tally, contrats_names, function(x, names){
+map2(cog_tally, contrast_names, function(x, names){
     x %>%   
     ggplot(aes(fill=sig, x=COG_category, y=relative)) +
     geom_col() + 
