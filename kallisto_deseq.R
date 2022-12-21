@@ -1,5 +1,5 @@
 rm(list=ls()); gc()
-#mojn___shitdik
+
 ####   DESeq2 analysis   ####
 
 #### Installing needed R-packeages
@@ -22,7 +22,7 @@ pacman::p_load(here,stringr,vctrs,vegan,pheatmap,readxl,ggplot2,tximport,tidyver
 
 #####Creating folders one would need####
 
-here() # checke that you are the right place
+here() # check that you are the right place
 getwd()
 dir.create(here("figs"),showWarnings = F)
 dir.create(here("data"),showWarnings = F)
@@ -51,14 +51,16 @@ files
 
 txi.kallisto <- tximport(files, type = "kallisto", txOut = TRUE)
 
+# check that the input files looks okay
 head(txi.kallisto$counts)
 
-
+# making data frame for DeSeq2
 dds_data <- DESeqDataSetFromTximport(txi.kallisto, 
                                      colData=meta,
                                      ~condition)
-
+# creating DeSeq2 analysis and object
 dds <- DESeq(dds_data)
+
 
 
       ####SizeFactor####
@@ -67,7 +69,7 @@ dds <- DESeq(dds_data)
 
 nm <- assays(dds)[["avgTxLength"]]
 sf <- estimateSizeFactorsForMatrix(counts(dds) / nm)
-
+sf
       ####Results from DeSeq2####
 
 res <- results(dds)
@@ -75,6 +77,10 @@ res <- res[order(res$padj),]
 summary(res)
 
 plotDispEsts(dds) 
+
+number_hits <-  as.data.frame(txi.kallisto$counts)
+
+colSums(number_hits)
 
       ####PCA plot####
 
@@ -87,6 +93,7 @@ ggsave(here("figs", "PCA_plot.png"))
 
       ####Making contrasts####
 
+# THIS WHOLE SECTION NEEDS TO ADJUSTED FOR EACH ANALYSIS
 
 #Mutant 24 h vs Mutant 72 h 
 res_m_24_m_72 <- results(dds, contrast=c("condition","m_24","m_72"), tidy = T)
@@ -108,14 +115,15 @@ all_contrast <- map2(contrats_list, contrats_names, function(x, name) {
     mutate(contrast = name) %>% as_tibble()
 })
 
-all_contrats_filtered <- do.call("rbind", all_contrast) %>% 
+
+
+all_contrast_filtered <- do.call("rbind", all_contrast) %>% 
   mutate(sig = case_when(padj > 0.01 ~ "not_rel",
                          log2FoldChange > 2 & padj < 0.01 ~ "up_sig",
                          log2FoldChange < -2 & padj < 0.01 ~ "down_sig",
                          log2FoldChange < 2 & padj < 0.01 & log2FoldChange > -2 ~ "not_rel")) %>% 
   filter(padj!="") %>% 
   as_tibble()
-
 
 
 map2(all_contrast, contrats_names, function(contrast, names){
@@ -126,7 +134,7 @@ map2(all_contrast, contrats_names, function(contrast, names){
 
      ####  Volcano plots  ####
 
-volcano_plots <- all_contrats_filtered %>% 
+volcano_plots <- all_contrast_filtered %>% 
   ggplot(aes(x = log2FoldChange, y = -log10(padj), col = sig)) +
   geom_point() +
   theme_bw() +
@@ -135,28 +143,39 @@ volcano_plots <- all_contrats_filtered %>%
 # save the figure in figure folder
 ggsave(here("figs", paste0("volcano_plots", ".png")))
 
+
+     #### Plot the gene of interest ####
+
+
+plot_gene <- function(genename){
+  plotCounts(dds,
+             gene = genename,
+             intgroup = "condition", 
+             returnData = T) %>% 
+    ggplot(aes(x=condition, y=count)) + 
+    geom_point(size=4, position = position_jitter()) + 
+    ggtitle(genename) + 
+    theme_classic() + 
+    ylab("Normalized Count") + 
+    xlab("Group") + 
+    theme(plot.title = element_text(hjust = 0.5, face="bold"), axis.title.x = element_text(face="bold"), axis.title.y = element_text(face="bold"))  
+}
+
+plot_gene("gene-OL67_RS18380") 
+
       ####  most upregulated  ####
 
-up_sig_list <- all_contrats_filtered %>% 
+up_sig_list <- all_contrast_filtered %>% 
   group_by(contrast) %>% 
   filter(sig =="up_sig") %>% 
   arrange(desc(baseMean), .by_group = T, decrease = T) %>% 
   dplyr::slice(1:9)
 
-down_sig_list <- all_contrats_filtered %>% 
+down_sig_list <- all_contrast_filtered %>% 
   group_by(contrast) %>% 
   filter(sig =="down_sig") %>% 
   arrange(desc(baseMean), .by_group = T, decrease = T) %>% 
   dplyr::slice(1:9)
-
-
-
-
-map(pull(distinct(up_sig_list, contrast)), function(x) {
-  up_sig_list %>% 
-    filter(contrast == x)
-})
- #######http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html####
 
 
 count_plots_up <- map(pull(distinct(up_sig_list, contrast)), function(x){
@@ -179,7 +198,9 @@ map2(count_plots_up, pull(distinct(up_sig_list, contrast)), function(x, name) {
     geom_point(position = position_jitter()) +
     theme_bw()+
     facet_wrap(.~gene, scales = "free") +
-    labs(title = name)  
+    labs(title = paste0("Top 9 Up regulated genes in ", name))  +
+    xlab("Group") + 
+    ylab("Normalized Count")
     ggsave(here("figs", paste0("up_regulated_",name, ".png")))
 })
 
@@ -203,28 +224,22 @@ map2(count_plots_down, pull(distinct(down_sig_list, contrast)), function(x, name
     geom_point(position = position_jitter()) +
     theme_bw()+
     facet_wrap(.~gene, scales = "free") +
-    labs(title = name)  
+    ylab("Normalized Count") + 
+    xlab("Group") + 
+    labs(title = paste0("Top 9 Down regulated genes in ", name))  
   ggsave(here("figs", paste0("down_regulated_",name, ".png")))
 })
 
 
 
-
-
-
-
-
-#_----------------
-
 ####Ipath_analysis####
 
-setwd("C:/Users/mdesc/OneDrive - Danmarks Tekniske Universitet/1-Cemist/1-projects/12-transcriptomic analysis/eggnog mapper output/")
-dir <- "C:/Users/mdesc/OneDrive - Danmarks Tekniske Universitet/1-Cemist/1-projects/12-transcriptomic analysis/eggnog mapper output/"
-list.files(dir)
-eggnog_data <- read.table(file.path(dir, "all_genes.txt"), header = TRUE) %>% 
+# you would need to type in the filename of the eggnog mapper output file 
+
+eggnog_data <- read_tsv(file.path(here(), "MM_dtjj1h_k.emapper.annotations.tsv")) %>% # type between ""
   dplyr::rename(row = query)
 
-all_contrats_filtered_ipath <- do.call("rbind", all_contrast) %>% 
+all_contrast_filtered_ipath <- do.call("rbind", all_contrast) %>% 
   mutate(sig = case_when(padj > 0.01 ~ "not_rel",
                          log2FoldChange > 0.5 & padj < 0.01 ~ "up_sig",
                          log2FoldChange < -0.5 & padj < 0.01 ~ "down_sig",
@@ -234,14 +249,14 @@ all_contrats_filtered_ipath <- do.call("rbind", all_contrast) %>%
 
 
 
-all_contrats_filtered_ipath_f <- all_contrats_filtered_ipath %>%
+all_contrast_filtered_ipath_f <- all_contrast_filtered_ipath %>%
   filter(sig != "not_rel") %>% 
   group_by(contrast) %>% 
   group_split() %>%
-  setNames(unique(all_contrats_filtered_ipath$contrast))
+  setNames(unique(all_contrast_filtered_ipath$contrast))
 
 
-all_contrats_filtered_ipath_ready <- map(all_contrats_filtered_ipath_f, function(contrast){
+all_contrast_filtered_ipath_ready <- map(all_contrast_filtered_ipath_f, function(contrast){
   contrast %>% 
     left_join(eggnog_data, by = "row")
 })
@@ -266,21 +281,98 @@ genes_to_iPath <- function(gene_list, file_name_append = NULL) {
   })
 }
 
-genes_to_iPath(all_contrats_filtered_ipath_ready)
+genes_to_iPath(all_contrast_filtered_ipath_ready)
+
+
+
+####COG categories plot####
+
+# create COG table for each contrast with significant genes + saving table with all data
+
+cog_tally <- map2(all_contrast_filtered_ipath_ready, contrats_names, function(x, names){
+  cog_tally <- x %>% 
+    dplyr::filter(sig =="up_sig" | sig =="down_sig") %>% 
+    filter(!is.na(COG_category), 
+           !COG_category=='-') %>%
+    mutate(COG_category = strsplit(COG_category, "")) %>%
+    unnest(COG_category)
+  
+  write_tsv(cog_tally, here("data", paste0("COG_data_", names, ".tsv" )))
+  
+  cog_tally <- cog_tally %>% 
+    dplyr::select(COG_category,sig) %>%   
+    group_by(COG_category, sig) %>% 
+    tally(name = "count")
+  
+  
+  eggnog <- eggnog_data %>% 
+    select(COG_category) %>%
+    filter(!is.na(COG_category), 
+           !COG_category=='-') %>% 
+    mutate(COG_category = strsplit(COG_category, "")) %>%
+    unnest(COG_category) %>%
+    group_by(COG_category) %>% 
+    tally(name = "total_COG")
+  
+  cog_tally <- cog_tally %>% 
+    left_join(eggnog, by = "COG_category") %>% 
+    mutate(relative = count/total_COG * 100,
+           count = ifelse(sig == "down_sig", count*-1, count),
+           relative = ifelse(sig == "down_sig", relative*-1, relative))
+    })
+
+
+
+map2(cog_tally, contrats_names, function(x, names){
+    x %>%   
+    ggplot(aes(fill=sig, x=COG_category, y=relative)) +
+    geom_col() + 
+    theme_classic() +
+    coord_flip() +
+    xlab("COG categories") +
+    scale_x_discrete(limits=rev) + 
+    scale_fill_manual(values=c("#EC3804" , "#038BE7")) +
+    scale_y_continuous(limits = c(-100, 100)) +
+    xlab("COG categories") +
+    ggtitle(paste0("DE COG categories in", " ", names)) +
+    theme(plot.title = element_text(hjust = 0.5, face="bold"))
+  
+  ggsave(here("figs", paste0("Relative DE COG_categories in",names, ".png")))
+  
+  x %>%   
+    ggplot(aes(fill=sig, x=COG_category, y=count)) +
+    geom_col() + 
+    theme_classic() +
+    coord_flip() +
+    xlab("COG categories") +
+    scale_x_discrete(limits=rev) + 
+    scale_fill_manual(values=c("#EC3804" , "#038BE7")) +
+    xlab("COG categories") +
+    ggtitle(paste0("DE COG categories in", " ", names)) +
+    theme(plot.title = element_text(hjust = 0.5, face="bold"))
+  
+  ggsave(here("figs", paste0("DE COG_categories in",names, ".png")))
+})
 
 
 
 
 
-colSums(counts(dds, normalized=T))
 
 
 
-library(pheatmap)
 
-pheatmap(counts(dds), labels_col = meta$condition)
 
-pheatmap(log10(counts(dds, normalized=T)+1), labels_col = meta$condition)
+
+
+
+
+
+
+
+
+
+
 
 
 
