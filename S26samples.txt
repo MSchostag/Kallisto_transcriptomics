@@ -11,4 +11,3 @@ wildtype_rep_2_24_hrs
 wildtype_rep_2_72_hrs
 wildtype_rep_3_24_hrs
 wildtype_rep_3_72_hrs
-
