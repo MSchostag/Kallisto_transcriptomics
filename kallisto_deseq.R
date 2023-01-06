@@ -2,7 +2,7 @@ rm(list=ls()); gc()
 
 ####   DESeq2 analysis   ####
 
-#### Installing needed R-packeages ####
+#### Installing needed R-packages #### Only do this step the first time
 
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
@@ -77,6 +77,8 @@ res <- res[order(res$padj),]
 summary(res)
 
 plotDispEsts(dds) 
+
+# calculate number of hits for each sample
 
 number_hits <-  as.data.frame(txi.kallisto$counts)
 
@@ -160,6 +162,7 @@ plot_gene <- function(genename){
     theme(plot.title = element_text(hjust = 0.5, face="bold"), axis.title.x = element_text(face="bold"), axis.title.y = element_text(face="bold"))  
 }
 
+### add the gene name of interest between ""
 plot_gene("gene-OL67_RS18380") 
 
 ####  most upregulated  ####
