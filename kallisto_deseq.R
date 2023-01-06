@@ -17,7 +17,7 @@ if (!require("pacman")) install.packages("pacman")
 
 ####   Loading all need packages #### 
 
-pacman::p_load(here,stringr,vctrs,vegan,pheatmap,readxl,ggplot2,tximport,tidyverse,DESeq2,dplyr, install = T)
+pacman::p_load(here,vctrs,ggplot2,tximport,tidyverse,DESeq2,dplyr, install = T)
 
 
 #####Creating folders one would need####
@@ -117,7 +117,7 @@ all_contrast <- map2(contrast_list, contrast_names, function(x, name) {
 })
 
 
-
+### extract all the significant and Log2 fold change >2 genes
 all_contrast_filtered <- do.call("rbind", all_contrast) %>% 
   mutate(sig = case_when(padj > 0.01 ~ "not_rel",
                          log2FoldChange > 2 & padj < 0.01 ~ "up_sig",
@@ -126,7 +126,7 @@ all_contrast_filtered <- do.call("rbind", all_contrast) %>%
   filter(padj!="") %>% 
   as_tibble()
 
-
+### write the significant and Log2 fold change >2 genes out as csv files and stored in /data
 map2(all_contrast, contrast_names, function(contrast, names){
   write.csv(contrast, here("data", paste0(names, ".csv" )))
   
@@ -167,19 +167,21 @@ plot_gene("gene-OL67_RS18380")
 
 ####  most upregulated  ####
 
+## select the top 9 most up regulated genes for each contrast
 up_sig_list <- all_contrast_filtered %>% 
   group_by(contrast) %>% 
   filter(sig =="up_sig") %>% 
   arrange(desc(baseMean), .by_group = T, decrease = T) %>% 
   dplyr::slice(1:9)
 
+## select the top 9 most Down regulated genes for each contrast 
 down_sig_list <- all_contrast_filtered %>% 
   group_by(contrast) %>% 
   filter(sig =="down_sig") %>% 
   arrange(desc(baseMean), .by_group = T, decrease = T) %>% 
   dplyr::slice(1:9)
 
-
+## extract the count data for the up regulated genes
 count_plots_up <- map(pull(distinct(up_sig_list, contrast)), function(x){
   genes <- up_sig_list %>% 
     filter(contrast == x) %>% 
@@ -193,6 +195,7 @@ count_plots_up <- map(pull(distinct(up_sig_list, contrast)), function(x){
   })
 })
 
+## create plot for the top 9 most up regulated genes for each contrast and save in /figs
 map2(count_plots_up, pull(distinct(up_sig_list, contrast)), function(x, name) {
   do.call("rbind", x) %>% 
     rownames_to_column(var = "group") %>% 
@@ -206,6 +209,7 @@ map2(count_plots_up, pull(distinct(up_sig_list, contrast)), function(x, name) {
   ggsave(here("figs", paste0("up_regulated_",name, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
 
+## extract the count data for the down regulated genes
 count_plots_down <- map(pull(distinct(down_sig_list, contrast)), function(x){
   genes <- up_sig_list %>% 
     filter(contrast == x) %>% 
@@ -219,6 +223,7 @@ count_plots_down <- map(pull(distinct(down_sig_list, contrast)), function(x){
   })
 })
 
+## create plot for the top 9 most down regulated genes for each contrast and save in /figs
 map2(count_plots_down, pull(distinct(down_sig_list, contrast)), function(x, name) {
   do.call("rbind", x) %>% 
     rownames_to_column(var = "group") %>% 
@@ -337,7 +342,7 @@ map2(cog_tally, contrast_names, function(x, names){
     scale_fill_manual(values=c("#EC3804" , "#038BE7")) +
     scale_y_continuous(limits = c(-100, 100)) +
     xlab("COG categories") +
-    ggtitle(paste0("DE COG categories in", " ", names)) +
+    ggtitle(paste0("DE COG categories in ", " ", names)) +
     theme(plot.title = element_text(hjust = 0.5, face="bold"))
   
   ggsave(here("figs", paste0("Relative DE COG_categories in",names, ".pdf")),dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
@@ -354,5 +359,5 @@ map2(cog_tally, contrast_names, function(x, names){
     ggtitle(paste0("DE COG categories in", " ", names)) +
     theme(plot.title = element_text(hjust = 0.5, face="bold"))
   
-  ggsave(here("figs", paste0("DE COG_categories in",names, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
+  ggsave(here("figs", paste0("DE COG_categories in ",names, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
