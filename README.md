@@ -3,9 +3,10 @@ This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial
 
 # Overview
 
+- [Installing and setting up the environment in linux](#Installing-and-setting-up-the-environment-in-linux)
 - [QC and filtering](#QC-and-filtering)
 
-## Setting up the environment in linux
+# Installing and setting up the environment in linux
 
 First you would need to install MiniConda. 
 Go to https://docs.conda.io/en/latest/miniconda.html#linux-installers 
