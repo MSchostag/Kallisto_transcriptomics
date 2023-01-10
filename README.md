@@ -41,9 +41,9 @@ mamba activate kallisto
 ***From now on you would work in the kallisto environment.***
 
 You would need the following programs for the transcriptomic analysis: 
-- FastP (https://github.com/OpenGene/fastp)
-- GFFread (https://github.com/gpertea/gffread)
-- Kallisto (https://github.com/pachterlab/kallisto)
+- FastP (https://github.com/OpenGene/fastp) - Used to clean and filter your FastQ files 
+- GFFread (https://github.com/gpertea/gffread) - Used to format gff files to transcript fasta file
+- Kallisto (https://github.com/pachterlab/kallisto) - Program for quantifying abundances of transcripts from RNA-Seq data 
 
 **Installing the programs:** 
 ```bash
@@ -51,8 +51,22 @@ mamba install -c bioconda fastp
 mamba install -c bioconda gffread
 mamba install -c bioconda kallisto
 ```
-
+Say yes to the installation, when asked. 
 
 ## QC of raw sequencing reads
+Start of by create a folder with all you files for you analysis: 
+```bash
+mkdir PROJECT_NAME 
+```
+Example: 
+```bash
+mkdir phaeobacter_S26_rna_seq 
+```
+Transfere all raw RNA reads to server and store in folder. This could be called "raw": 
+```bash
+mkdir raw 
+```
+
+
 
 ## setting up the files
