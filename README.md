@@ -3,7 +3,7 @@ This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial
 
 # Overview
 
-- [QC](#QC and filtering)
+- [QC and filtering](#QC-and-filtering)
 
 ## Setting up the environment in linux
 
