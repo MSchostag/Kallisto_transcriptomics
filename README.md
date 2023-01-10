@@ -6,9 +6,9 @@ This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial
 - [Installing and setting up the environment in linux](#Installing-and-setting-up-the-environment-in-linux)
 - [QC and filtering](#QC-and-filtering)
 - [Running Kallisto](#Running-Kallisto)
-  -[Input files](#Input-files)
-  -[Build a Kallisto transcriptome index](#Build-a-Kallisto-transcriptome-index)
-  -[Generate abundance estimates](#Generate-abundance-estimates)
+  - [Input files](#Input-files)
+  - [Build a Kallisto transcriptome index](#Build-a-Kallisto-transcriptome-index)
+  - [Generate abundance estimates](#Generate-abundance-estimates)
 - [DeSeq2 analysis using RStudio](#DeSeq2-analysis-using-RStudio)
 
 
