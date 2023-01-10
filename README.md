@@ -1,6 +1,10 @@
 # Kallisto_transcriptomics
 This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial monoculture. This is ment as a guide for researchers at The Center for Microbial Secondary Metabolites (CeMiSt) - https://cemist.dtu.dk/.   
 
+# Overview
+
+- [QC of raw sequencing reads](## QC of raw sequencing reads)
+
 ## Setting up the environment in linux
 
 First you would need to install MiniConda. 
@@ -68,6 +72,7 @@ mkdir raw
 cd raw # transfere to here
 ```
 
+Now filter the raw reads using default settings with FastP. This also includes adapter removal.  
 
 
 ## setting up the files
