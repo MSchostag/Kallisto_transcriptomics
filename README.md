@@ -74,6 +74,15 @@ cd raw # transfere to here
 ```
 
 Now filter the raw reads using default settings with FastP. This also includes adapter removal.  
-
+Folder for filtered read files
+```bash
+mkdir filtered
+```
+Running FastP
+```bash
+fastp -i SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1.fastq.gz -I SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2.fastq.gz -o filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_f.fastq.gz -O filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_f.fastq.gz -h filtered/dtdaB_rep_1_72_hrs_fw_reads_1.html
+example:
+ 
+```
 
 ## setting up the files
