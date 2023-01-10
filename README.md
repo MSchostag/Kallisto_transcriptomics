@@ -102,6 +102,32 @@ If one do not have a transcript fasta file, you could create it with a GFF file 
 Generate a FASTA file with the DNA sequences for all transcripts in a GFF file. For this operation a fasta file with the genomic sequences has to be provided as well. This can be accomplished with a command line like this:
 ```bash
 gffread -w transcripts.fa -g genome.fa annotation.gff
+
+Example: 
+gffread -w S26_cds.fna -g GCF_000826835.2_ASM82683v2_genomic.fna GCF_000826835.2_ASM82683v2_genomic.gff
 ```
+## Build a Kallisto transcriptome index
+
+Now create a Kallisto transcriptome index:
+```bash
+kallisto index -i transcripts.idx transcripts.fasta.gz
+
+Example: 
+kallisto index -i transcripts.idx S26_cds.fna
+```
+
+## Generate abundance estimates for all samples using Kallisto
+
+First make a output folder: 
+```bash
+mkdir output
+```
+
+Create abundance estimates, for each sample: 
+```bash
+kallisto quant -i transcripts.idx -o output -b 100 FORWARD_READ_1_f.fastq.gz REVERSE_READ_1_f.fastq.gz -t 20
+```
+In this example one would use 20 threads and bootstrap 100 times.
+
 
 ## setting up the files
