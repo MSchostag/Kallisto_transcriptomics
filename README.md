@@ -9,6 +9,7 @@ This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial
   - [Input files](#Input-files)
   - [Build a Kallisto transcriptome index](#Build-a-Kallisto-transcriptome-index)
   - [Generate abundance estimates](#Generate-abundance-estimates)
+- [Differential gene expression analysis](#Differential-gene-expression-analysis)
 - [DeSeq2 analysis using RStudio](#DeSeq2-analysis-using-RStudio)
   - [Setting up files](#setting-up-the-files)
 
@@ -140,6 +141,45 @@ In this example one would use 20 threads and bootstrap 100 times.
 
 Do this for each sample in your analysis. 
 
+For each sample you would now have created the following files: 
+```bash
+abundance.h5  
+abundance.tsv
+run_info.json
+```
+
+The abundance.h5 will be used in the differential gene expression analysis. 
+
+# Differential gene expression analysis
 # DeSeq2 analysis using RStudio
+For differential gene expression analysis we would use DeSeq2 
+http://bioconductor.org/packages/devel/bioc/vignettes/DESeq2/inst/doc/DESeq2.html
 
 ## setting up the files
+First we need to setup the files and make additional files. 
+
+Start by creating a folder were all the output from the analysis will be located. 
+
+Create a folder called "kallisto". Within this folder one should transfere all the output folder from Kallisto (\output folder from linux) 
+
+You would need to create two meta files: 
+1) meta.txt
+2) samples.txt
+
+meta.txt should contain the meta data for your analysis. **minimum: samplename and condition. OBS!!! use the same headers as in the example.** 
+Example: 
+```bash
+sample	condition	rep
+dtdaB_rep_1_24_hrs	m_24	1
+dtdaB_rep_2_24_hrs	m_24	2
+dtdaB_rep_3_24_hrs	m_24	3
+wildtype_rep_1_24_hrs	wt_24	1
+wildtype_rep_2_24_hrs	wt_24	2
+wildtype_rep_3_24_hrs	wt_24	3
+```
+See also the file meta.txt
+
+
+
+Now open you RStudio and create a new project (File->create project) and save it in the newly created analysis folder.  
+
