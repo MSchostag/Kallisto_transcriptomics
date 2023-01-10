@@ -27,7 +27,8 @@ Install Mamba using Miniconda:
 ```bash
 conda install mamba -n base -c conda-forge
 ```
-This is used to create an environment to work in. 
+This is used to create an environment to work in. Have a look at this guide for commandlines when working in environments: 
+https://www.imranabdullah.com/2021-08-21/Conda-and-Mamba-Commands-for-Managing-Virtual-Environments 
 
 Create an environment for Kallisto analysis:
 ```bash
@@ -36,6 +37,19 @@ mamba create --name kallisto
 Activate the Kallisto environment: 
 ```bash
 mamba activate kallisto 
+```
+***From now on you would work in the kallisto environment.***
+
+You would need the following programs for the transcriptomic analysis: 
+- FastP (https://github.com/OpenGene/fastp)
+- GFFread (https://github.com/gpertea/gffread)
+- Kallisto (https://github.com/pachterlab/kallisto)
+
+**Installing the programs:** 
+```bash
+mamba install -c bioconda fastp
+mamba install -c bioconda gffread
+mamba install -c bioconda kallisto
 ```
 
 
