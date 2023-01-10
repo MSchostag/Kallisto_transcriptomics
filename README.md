@@ -5,6 +5,7 @@ This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial
 
 - [Installing and setting up the environment in linux](#Installing-and-setting-up-the-environment-in-linux)
 - [QC and filtering](#QC-and-filtering)
+- [Running Kallisto](#Running-Kallisto)
 
 # Installing and setting up the environment in linux
 
@@ -80,9 +81,27 @@ mkdir filtered
 ```
 Running FastP
 ```bash
-fastp -i SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1.fastq.gz -I SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2.fastq.gz -o filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_f.fastq.gz -O filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_f.fastq.gz -h filtered/dtdaB_rep_1_72_hrs_fw_reads_1.html
+fastp -i FORWARD_READ_1.fastq.gz -I REVERSE_READ_1.fastq.gz -o filtered/FORWARD_READ_1_f.fastq.gz -O filtered/REVERSE_READ_1_f.fastq.gz -h filtered/READS_1.html
+
 example:
- 
+fastp -i RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1.fastq.gz -I RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2.fastq.gz -o filtered/RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_f.fastq.gz -O filtered/RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_f.fastq.gz -h filtered/dtdaB_rep_1_72_hrs_fw_reads_1.html
+```
+
+# Running Kallisto
+For kallisto one would need a transcript fasta file to create a index file 
+
+Example of transcript file: 
+```bash
+>gene1 CDS=1-10
+ATGTCCGGAAACGAGCAGGCCCCCGCAGACTATGGCGCGGA.....
+>gene2 CDS=1-20
+ATGTCCGGAAACGAGCAGGCCCCCGCAGACTATGGCGCGGA.....
+```
+If one do not have a transcript fasta file, you could create it with a GFF file using GFFread. 
+
+Generate a FASTA file with the DNA sequences for all transcripts in a GFF file. For this operation a fasta file with the genomic sequences has to be provided as well. This can be accomplished with a command line like this:
+```bash
+gffread -w transcripts.fa -g genome.fa annotation.gff
 ```
 
 ## setting up the files
