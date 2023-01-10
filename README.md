@@ -3,7 +3,7 @@ This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial
 
 # Overview
 
-- [QC of raw sequencing reads](## QC of raw sequencing reads)
+- [QC of raw sequencing reads](# QC of raw sequencing reads)
 
 ## Setting up the environment in linux
 
@@ -57,7 +57,7 @@ mamba install -c bioconda kallisto
 ```
 Say yes to the installation, when asked. 
 
-## QC of raw sequencing reads
+# QC of raw sequencing reads
 Start of by create a folder with all you files for you analysis: 
 ```bash
 mkdir PROJECT_NAME 
