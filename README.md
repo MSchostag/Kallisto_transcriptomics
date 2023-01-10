@@ -6,6 +6,11 @@ This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial
 - [Installing and setting up the environment in linux](#Installing-and-setting-up-the-environment-in-linux)
 - [QC and filtering](#QC-and-filtering)
 - [Running Kallisto](#Running-Kallisto)
+  -[Input files](#Input-files)
+  -[Build a Kallisto transcriptome index](#Build-a-Kallisto-transcriptome-index)
+  -[Generate abundance estimates](#Generate-abundance-estimates)
+- [DeSeq2 analysis using RStudio](#DeSeq2-analysis-using-RStudio)
+
 
 # Installing and setting up the environment in linux
 
@@ -88,6 +93,7 @@ fastp -i RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1.fastq.gz -
 ```
 
 # Running Kallisto
+## Input files 
 For kallisto one would need a transcript fasta file to create a index file 
 
 Example of transcript file: 
@@ -116,7 +122,7 @@ Example:
 kallisto index -i transcripts.idx S26_cds.fna
 ```
 
-## Generate abundance estimates for all samples using Kallisto
+## Generate abundance estimates
 
 First make a output folder: 
 ```bash
@@ -126,8 +132,13 @@ mkdir output
 Create abundance estimates, for each sample: 
 ```bash
 kallisto quant -i transcripts.idx -o output -b 100 FORWARD_READ_1_f.fastq.gz REVERSE_READ_1_f.fastq.gz -t 20
+
+Example: 
+kallisto quant -i transcripts.idx -o output/dtdaB_rep_1_72_hrs raw/filtered/RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_f.fastq.gz raw/filtered/RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_f.fastq.gz -t 20
 ```
 In this example one would use 20 threads and bootstrap 100 times.
 
+
+# DeSeq2 analysis using RStudio
 
 ## setting up the files
