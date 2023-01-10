@@ -10,7 +10,7 @@ This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial
   - [Build a Kallisto transcriptome index](#Build-a-Kallisto-transcriptome-index)
   - [Generate abundance estimates](#Generate-abundance-estimates)
 - [DeSeq2 analysis using RStudio](#DeSeq2-analysis-using-RStudio)
-
+  - [Setting up files](#setting-up-the-files)
 
 # Installing and setting up the environment in linux
 
@@ -94,7 +94,7 @@ fastp -i RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1.fastq.gz -
 
 # Running Kallisto
 ## Input files 
-For kallisto one would need a transcript fasta file to create a index file 
+For kallisto one would need a transcript fasta file to create a index file.
 
 Example of transcript file: 
 ```bash
@@ -103,7 +103,7 @@ ATGTCCGGAAACGAGCAGGCCCCCGCAGACTATGGCGCGGA.....
 >gene2 CDS=1-20
 ATGTCCGGAAACGAGCAGGCCCCCGCAGACTATGGCGCGGA.....
 ```
-If one do not have a transcript fasta file, you could create it with a GFF file using GFFread. 
+If one do not have a transcript fasta file, you could create it with a GFF file and genome fasta file using GFFread. 
 
 Generate a FASTA file with the DNA sequences for all transcripts in a GFF file. For this operation a fasta file with the genomic sequences has to be provided as well. This can be accomplished with a command line like this:
 ```bash
@@ -138,6 +138,7 @@ kallisto quant -i transcripts.idx -o output/dtdaB_rep_1_72_hrs raw/filtered/RNAs
 ```
 In this example one would use 20 threads and bootstrap 100 times.
 
+Do this for each sample in your analysis. 
 
 # DeSeq2 analysis using RStudio
 
