@@ -166,7 +166,8 @@ You would need to create two meta files:
 1) meta.txt
 2) samples.txt
 
-meta.txt should contain the meta data for your analysis. **minimum: samplename and condition. OBS!!! use the same headers as in the example.** 
+meta.txt should contain the meta data for your analysis. **Minimum: samplename and condition. OBS!!! use the same headers as in the example.** 
+
 Example: 
 ```bash
 sample	condition	rep
@@ -179,7 +180,20 @@ wildtype_rep_3_24_hrs	wt_24	3
 ```
 See also the file meta.txt
 
-
+sample.txt should contain all the names of sample folders with in \kallisto. **See example in sample.txt, again the headers should be the same as in the file.**  
+Example: 
+```bash
+run
+dtdaB_rep_1_24_hrs
+dtdaB_rep_2_24_hrs
+dtdaB_rep_3_24_hrs
+wildtype_rep_1_24_hrs
+wildtype_rep_2_24_hrs
+wildtype_rep_3_24_hrs
+```
 
 Now open you RStudio and create a new project (File->create project) and save it in the newly created analysis folder.  
 
+Copy the kallisto_deseq.R and place it in the analysis folder. 
+
+Now open the kallisto_deseq.R file with in the R project and run the analysis. 
