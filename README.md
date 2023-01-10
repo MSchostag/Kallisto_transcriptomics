@@ -65,6 +65,7 @@ mkdir phaeobacter_S26_rna_seq
 Transfere all raw RNA reads to server and store in folder. This could be called "raw": 
 ```bash
 mkdir raw 
+cd raw # transfere to here
 ```
 
 
