@@ -196,8 +196,10 @@ wildtype_rep_3_24_hrs
 
 Go to http://eggnog-mapper.embl.de/ and upload your genome of interest, run the analysis and place the output file (*.tsv) the analysis folder.  
 
+## Running the analysis i RStudio
+
 Now open you RStudio and create a new project (File->create project) and save it in the newly created analysis folder.  
 
 Copy the kallisto_deseq.R and place it in the analysis folder. 
 
-Now open the kallisto_deseq.R file with in the R project and run the analysis. Within this file there is explanation for the different steps. 
+**Now open the kallisto_deseq.R file with in the R project and run the analysis. Within this file there is explanation for the different steps.**
