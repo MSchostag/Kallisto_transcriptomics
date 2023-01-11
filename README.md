@@ -113,6 +113,7 @@ gffread -w transcripts.fa -g genome.fa annotation.gff
 Example: 
 gffread -w S26_cds.fna -g GCF_000826835.2_ASM82683v2_genomic.fna GCF_000826835.2_ASM82683v2_genomic.gff
 ```
+
 ## Build a Kallisto transcriptome index
 
 Now create a Kallisto transcriptome index:
@@ -191,6 +192,8 @@ wildtype_rep_1_24_hrs
 wildtype_rep_2_24_hrs
 wildtype_rep_3_24_hrs
 ```
+**If you are interested to look at which pathways and which COG categories are significant differential expressed between your samples. Then you would have to get the functional Annotation and Orthology Assignmentsusing eggNOG-Mapper**
+Go to http://eggnog-mapper.embl.de/ and upload your genome of interest and place the output file (*.tsv) the analysis folder.  
 
 Now open you RStudio and create a new project (File->create project) and save it in the newly created analysis folder.  
 
