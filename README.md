@@ -12,6 +12,7 @@ This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial
 - [Differential gene expression analysis](#Differential-gene-expression-analysis)
 - [DeSeq2 analysis using RStudio](#DeSeq2-analysis-using-RStudio)
   - [Setting up files](#setting-up-the-files)
+  - [Running the analysis i RStudio](#Running-the-analysis-i-RStudio)
 
 # Installing and setting up the environment in linux
 
