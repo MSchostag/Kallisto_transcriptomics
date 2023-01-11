@@ -192,11 +192,12 @@ wildtype_rep_1_24_hrs
 wildtype_rep_2_24_hrs
 wildtype_rep_3_24_hrs
 ```
-**If you are interested to look at which pathways and which COG categories are significant differential expressed between your samples. Then you would have to get the functional Annotation and Orthology Assignmentsusing eggNOG-Mapper**
-Go to http://eggnog-mapper.embl.de/ and upload your genome of interest and place the output file (*.tsv) the analysis folder.  
+**If you are interested to look at which pathways and which COG categories are significant differential expressed between your samples. Then you would have to get the functional Annotation and Orthology Assignmentsusing eggNOG-Mapper.**
+
+Go to http://eggnog-mapper.embl.de/ and upload your genome of interest, run the analysis and place the output file (*.tsv) the analysis folder.  
 
 Now open you RStudio and create a new project (File->create project) and save it in the newly created analysis folder.  
 
 Copy the kallisto_deseq.R and place it in the analysis folder. 
 
-Now open the kallisto_deseq.R file with in the R project and run the analysis. 
+Now open the kallisto_deseq.R file with in the R project and run the analysis. Within this file there is explanation for the different steps. 
