@@ -1,7 +1,7 @@
 # Kallisto_transcriptomics
 This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial monoculture. This is ment as a guide for researchers at The Center for Microbial Secondary Metabolites (CeMiSt) - https://cemist.dtu.dk/.   
 
-You can download all the files needed from this repository by clicking 
+***You can download all the files needed from this repository by clicking the <> Code bottom and download as zip file.***
 
 # Overview
 
@@ -167,6 +167,8 @@ Start by creating a folder were all the output from the analysis will be located
 
 Create a folder called "kallisto". Within this folder one should transfere all the output folder from Kallisto (\output folder from linux) 
 
+*** you can tryout the DeSeq2 analysis using the examples files in /kallisto folder and meta.txt and samples.txt files ***
+
 You would need to create two meta files: 
 1) meta.txt
 2) samples.txt
@@ -219,3 +221,15 @@ Now open you RStudio and create a new project (File->create project) and save it
 Copy the kallisto_deseq.R and place it in the analysis folder. 
 
 **Now open the kallisto_deseq.R file with in the R project and run the analysis. Within this file there is explanation for the different steps.**
+
+## Pathway analysis using Ipath
+
+Within kallisto_deseq.R there is a Pathway analysis using the KEGG_KO numbers. See ####Ipath_analysis####
+
+The output from this is text files that contains KEGG_KO numbers from genes that are significant Differential expressed. 
+
+This can be used to do a global pathway analysis using Ipath homepage https://pathways.embl.de/
+
+Choose the map of interest and paste the content from each Ipath contrast file and paste it in the "Element selection:" 
+
+Colors explained: Blue is Up and Red is down regulated pathways
