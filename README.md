@@ -1,6 +1,8 @@
 # Kallisto_transcriptomics
 This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial monoculture. This is ment as a guide for researchers at The Center for Microbial Secondary Metabolites (CeMiSt) - https://cemist.dtu.dk/.   
 
+You can download all the files needed from this repository by clicking 
+
 # Overview
 
 - [Installing and setting up the environment in linux](#Installing-and-setting-up-the-environment-in-linux)
