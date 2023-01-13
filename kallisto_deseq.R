@@ -17,7 +17,7 @@ if (!require("pacman")) install.packages("pacman")
 
 ####   Loading all need packages #### 
 
-pacman::p_load(here,vctrs,ggplot2,tximport,tidyverse,DESeq2,dplyr, install = T)
+pacman::p_load(here,vctrs,ggplot2,tximport,tidyverse,DESeq2,dplyr,readr, install = T)
 
 
 #####Creating folders one would need####
@@ -141,7 +141,7 @@ volcano_plots <- all_contrast_filtered %>%
   theme_bw() +
   scale_color_manual(values=c("Red", "black", "blue")) +
   facet_wrap(.~contrast)
-# save the figure in figure folder
+# save the figure in figs folder
 ggsave(here("figs", "volcano_plots.pdf"), dpi = 300, units = "cm", width = 20, height = 20, scale = 1) #### write dimention
 
 
@@ -165,7 +165,7 @@ plot_gene <- function(genename){
 ### add the gene name of interest between ""
 plot_gene("gene-OL67_RS18380") 
 
-####  most upregulated  ####
+####  most differential expressed genes  ####
 
 ## select the top 9 most up regulated genes for each contrast
 up_sig_list <- all_contrast_filtered %>% 
@@ -240,13 +240,19 @@ map2(count_plots_down, pull(distinct(down_sig_list, contrast)), function(x, name
 
 
 ####Ipath_analysis####
-# address to ipath
+# Go to http://eggnog-mapper.embl.de/ and upload your genome to get the file needed for the following steps
 
-# you would need to type in the filename of the eggnog mapper output file 
+# you would need to type in the *.tsv file name of the eggnog mapper output file 
 
-eggnog_data <- read_tsv(file.path(here(), "MM_dtjj1h_k.emapper.annotations.tsv")) %>% # type between ""
+#import the eggNOG output file - type between ""
+eggnog_file <- "MM_dtjj1h_k.emapper.annotations.tsv"
+
+eggnog_data <- readr::read_tsv(file.path(here(), eggnog_file))  %>% 
   dplyr::rename(row = query)
 
+# it will give you and error because the last three lines in the tsv file is used and is run info from eggNOG mapper  
+
+# select the significant genes - you could changes the parameters
 all_contrast_filtered_ipath <- do.call("rbind", all_contrast) %>% 
   mutate(sig = case_when(padj > 0.01 ~ "not_rel",
                          log2FoldChange > 0.5 & padj < 0.01 ~ "up_sig",
@@ -255,15 +261,14 @@ all_contrast_filtered_ipath <- do.call("rbind", all_contrast) %>%
   filter(padj!="") %>% 
   as_tibble()
 
-
-
+# removing all the none relevant genes and group the data by the contrasts
 all_contrast_filtered_ipath_f <- all_contrast_filtered_ipath %>%
   filter(sig != "not_rel") %>% 
   group_by(contrast) %>% 
   group_split() %>%
   setNames(unique(all_contrast_filtered_ipath$contrast))
 
-
+# adding the eggnog data to each of the contrasts data frames 
 all_contrast_filtered_ipath_ready <- map(all_contrast_filtered_ipath_f, function(contrast){
   contrast %>% 
     left_join(eggnog_data, by = "row")
@@ -272,6 +277,7 @@ all_contrast_filtered_ipath_ready <- map(all_contrast_filtered_ipath_f, function
 
 # Write iPath-ready table
 
+#function for extracting the up and down regulated genes and there KEGG_ko numbers and printing to files, for each of the contrasts
 genes_to_iPath <- function(gene_list, file_name_append = NULL) {
   map2(gene_list, names(gene_list), function(contrast, name){
     int_list <- contrast %>% 
@@ -289,13 +295,17 @@ genes_to_iPath <- function(gene_list, file_name_append = NULL) {
   })
 }
 
+# running the function with the data
 genes_to_iPath(all_contrast_filtered_ipath_ready)
 
+# If you copy the content of the ipath*.tsv and paste it to https://pathways.embl.de/ in either of the pathways. 
+# then you would see which pathways are up or down regulated in that contrast. 
+# Blue is up and red is down regulated   
 
 
 ####COG categories plot####
 
-# create COG table for each contrast with significant genes + saving table with all data
+# Create COG table for each contrast with significant genes + saving table with all data
 
 cog_tally <- map2(all_contrast_filtered_ipath_ready, contrast_names, function(x, names){
   cog_tally <- x %>% 
@@ -329,7 +339,7 @@ cog_tally <- map2(all_contrast_filtered_ipath_ready, contrast_names, function(x,
            relative = ifelse(sig == "down_sig", relative*-1, relative))
 })
 
-
+# printing 
 
 map2(cog_tally, contrast_names, function(x, names){
   x %>%   
@@ -345,7 +355,7 @@ map2(cog_tally, contrast_names, function(x, names){
     ggtitle(paste0("DE COG categories in ", " ", names)) +
     theme(plot.title = element_text(hjust = 0.5, face="bold"))
   
-  ggsave(here("figs", paste0("Relative DE COG_categories in",names, ".pdf")),dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
+  ggsave(here("figs", paste0("Relative DE COG_categories in ",names, ".pdf")),dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
   
   x %>%   
     ggplot(aes(fill=sig, x=COG_category, y=count)) +
@@ -361,3 +371,4 @@ map2(cog_tally, contrast_names, function(x, names){
   
   ggsave(here("figs", paste0("DE COG_categories in ",names, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
+
