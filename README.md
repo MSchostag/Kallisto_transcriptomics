@@ -174,11 +174,17 @@ Example:
 ```bash
 sample	condition	rep
 dtdaB_rep_1_24_hrs	m_24	1
+dtdaB_rep_1_72_hrs	m_72	1
 dtdaB_rep_2_24_hrs	m_24	2
+dtdaB_rep_2_72_hrs	m_72	2
 dtdaB_rep_3_24_hrs	m_24	3
+dtdaB_rep_3_72_hrs	m_72	3
 wildtype_rep_1_24_hrs	wt_24	1
+wildtype_rep_1_72_hrs	wt_72	1
 wildtype_rep_2_24_hrs	wt_24	2
+wildtype_rep_2_72_hrs	wt_72	2
 wildtype_rep_3_24_hrs	wt_24	3
+wildtype_rep_3_72_hrs	wt_72	3
 ```
 See also the file meta.txt
 
@@ -187,11 +193,17 @@ Example:
 ```bash
 run
 dtdaB_rep_1_24_hrs
+dtdaB_rep_1_72_hrs
 dtdaB_rep_2_24_hrs
+dtdaB_rep_2_72_hrs
 dtdaB_rep_3_24_hrs
+dtdaB_rep_3_72_hrs
 wildtype_rep_1_24_hrs
+wildtype_rep_1_72_hrs
 wildtype_rep_2_24_hrs
+wildtype_rep_2_72_hrs
 wildtype_rep_3_24_hrs
+wildtype_rep_3_72_hrs
 ```
 **If you are interested to look at which pathways and which COG categories are significant differential expressed between your samples. Then you would have to get the functional Annotation and Orthology Assignmentsusing eggNOG-Mapper.**
 
