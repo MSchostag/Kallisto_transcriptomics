@@ -302,7 +302,7 @@ genes_to_iPath <- function(gene_list, file_name_append = NULL) {
 # running the function with the data
 genes_to_iPath(all_contrast_filtered_ipath_ready)
 
-# If you copy the content of the ipath*.tsv and paste it to https://pathways.embl.de/ in either of the pathways. 
+# If you copy the content of the ipath*.tsv and paste it to https://pathways.embl.de/ in either of the pathway maps. 
 # then you would see which pathways are up or down regulated in that contrast. 
 # Blue is up and red is down regulated   
 
