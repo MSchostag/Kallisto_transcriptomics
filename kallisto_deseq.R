@@ -375,4 +375,3 @@ map2(cog_tally, contrast_names, function(x, names){
   
   ggsave(here("figs/COG_plots", paste0("DE COG_categories in ",names, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
-
