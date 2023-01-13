@@ -15,6 +15,7 @@ This is a guide how to do basic transcriptomic (RNA seq) analysis from bacterial
 - [DeSeq2 analysis using RStudio](#DeSeq2-analysis-using-RStudio)
   - [Setting up files](#setting-up-the-files)
   - [Running the analysis i RStudio](#Running-the-analysis-i-RStudio)
+  - [Pathway analysis using Ipath](#Pathway-analysis-using-Ipath)
 
 # Installing and setting up the environment in linux
 
@@ -224,11 +225,11 @@ Copy the kallisto_deseq.R and place it in the analysis folder.
 
 ## Pathway analysis using Ipath
 
-Within kallisto_deseq.R there is a Pathway analysis using the KEGG_KO numbers. See ####Ipath_analysis####
+Within kallisto_deseq.R there is a Pathway analysis using the KEGG_KO numbers. See ***####Ipath_analysis#### Line 246***
 
 The output from this is text files that contains KEGG_KO numbers from genes that are significant Differential expressed. 
 
-This can be used to do a global pathway analysis using Ipath homepage https://pathways.embl.de/
+**This can be used to do a global pathway analysis using Ipath homepage https://pathways.embl.de/**
 
 Choose the map of interest and paste the content from each Ipath contrast file and paste it in the "Element selection:" 
 
