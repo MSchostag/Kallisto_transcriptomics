@@ -343,7 +343,7 @@ cog_tally <- map2(all_contrast_filtered_ipath_ready, contrast_names, function(x,
            relative = ifelse(sig == "down_sig", relative*-1, relative))
 })
 
-# printing significant COG categories. Both raw counts and relative
+# printing significant COG categories. Both raw counts and relative. TRY AGAIN
 
 map2(cog_tally, contrast_names, function(x, names){
   x %>%   
