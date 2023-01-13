@@ -25,7 +25,12 @@ pacman::p_load(here,vctrs,ggplot2,tximport,tidyverse,DESeq2,dplyr,readr, install
 here() # check that you are the right place
 getwd()
 dir.create(here("figs"),showWarnings = F)
+dir.create(here("figs/significant_genes"),showWarnings = F)
+dir.create(here("figs/COG_plots"),showWarnings = F)
 dir.create(here("data"),showWarnings = F)
+dir.create(here("data/ipath"),showWarnings = F)
+dir.create(here("data/COG"),showWarnings = F)
+
 
 #### loading the data ####
 
@@ -129,7 +134,6 @@ all_contrast_filtered <- do.call("rbind", all_contrast) %>%
 ### write the significant and Log2 fold change >2 genes out as csv files and stored in /data
 map2(all_contrast, contrast_names, function(contrast, names){
   write.csv(contrast, here("data", paste0(names, ".csv" )))
-  
 })
 
 
@@ -206,7 +210,7 @@ map2(count_plots_up, pull(distinct(up_sig_list, contrast)), function(x, name) {
     labs(title = paste0("Top 9 Up regulated genes in ", name))  +
     xlab("Group") + 
     ylab("Normalized Count")
-  ggsave(here("figs", paste0("up_regulated_",name, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
+  ggsave(here("figs/significant_genes", paste0("up_regulated_",name, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
 
 ## extract the count data for the down regulated genes
@@ -234,7 +238,7 @@ map2(count_plots_down, pull(distinct(down_sig_list, contrast)), function(x, name
     ylab("Normalized Count") + 
     xlab("Group") + 
     labs(title = paste0("Top 9 Down regulated genes in ", name))  
-  ggsave(here("figs", paste0("down_regulated_",name, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
+  ggsave(here("figs/significant_genes", paste0("down_regulated_",name, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
 
 
@@ -289,7 +293,7 @@ genes_to_iPath <- function(gene_list, file_name_append = NULL) {
       mutate(sig = ifelse(sig == "up_sig", "#038BE7", "#EC3804"),
              width = "W10") # make column named change that gives you up and down reg genes
     
-    write_tsv(int_list, here("data", 
+    write_tsv(int_list, here("data/ipath", 
                              paste0("iPath_", name, "_", file_name_append, ".tsv")), 
               col_names = F)
   })
@@ -315,7 +319,7 @@ cog_tally <- map2(all_contrast_filtered_ipath_ready, contrast_names, function(x,
     mutate(COG_category = strsplit(COG_category, "")) %>%
     unnest(COG_category)
   
-  write_tsv(cog_tally, here("data", paste0("COG_data_", names, ".tsv" )))
+  write_tsv(cog_tally, here("data/COG", paste0("COG_data_", names, ".tsv" )))
   
   cog_tally <- cog_tally %>% 
     dplyr::select(COG_category,sig) %>%   
@@ -355,7 +359,7 @@ map2(cog_tally, contrast_names, function(x, names){
     ggtitle(paste0("DE COG categories in ", " ", names)) +
     theme(plot.title = element_text(hjust = 0.5, face="bold"))
   
-  ggsave(here("figs", paste0("Relative DE COG_categories in ",names, ".pdf")),dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
+  ggsave(here("figs/COG_plots", paste0("Relative DE COG_categories in ",names, ".pdf")),dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
   
   x %>%   
     ggplot(aes(fill=sig, x=COG_category, y=count)) +
@@ -369,6 +373,6 @@ map2(cog_tally, contrast_names, function(x, names){
     ggtitle(paste0("DE COG categories in", " ", names)) +
     theme(plot.title = element_text(hjust = 0.5, face="bold"))
   
-  ggsave(here("figs", paste0("DE COG_categories in ",names, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
+  ggsave(here("figs/COG_plots", paste0("DE COG_categories in ",names, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
 
