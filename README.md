@@ -80,6 +80,7 @@ Transfere all raw RNA reads to server and store in folder. This could be called 
 mkdir raw 
 cd raw # transfere to here
 ```
+You can use the example seq files in /seq_test_data
 
 Now filter the raw reads using default settings with FastP. This also includes adapter removal.  
 Folder for filtered read files
@@ -91,7 +92,7 @@ Running FastP
 fastp -i FORWARD_READ_1.fastq.gz -I REVERSE_READ_1.fastq.gz -o filtered/FORWARD_READ_1_f.fastq.gz -O filtered/REVERSE_READ_1_f.fastq.gz -h filtered/READS_1.html
 
 example:
-fastp -i RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1.fastq.gz -I RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2.fastq.gz -o filtered/RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_f.fastq.gz -O filtered/RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_f.fastq.gz -h filtered/dtdaB_rep_1_72_hrs_fw_reads_1.html
+fastp -i SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_subsample.fastq.gz -I SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_subsample.fastq.gz -o filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_f_subsample.fastq.gz -O filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_f_subsample.fastq.gz -h filtered/dtdaB_rep_1_72_hrs_fw_reads_1.html
 ```
 
 # Running Kallisto
@@ -137,7 +138,7 @@ Create abundance estimates, for each sample:
 kallisto quant -i transcripts.idx -o output -b 100 FORWARD_READ_1_f.fastq.gz REVERSE_READ_1_f.fastq.gz -t 20
 
 Example: 
-kallisto quant -i transcripts.idx -o output/dtdaB_rep_1_72_hrs raw/filtered/RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_f.fastq.gz raw/filtered/RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_f.fastq.gz -t 20
+kallisto quant -i transcripts.idx -o output/dtdaB_rep_1_72_hrs raw/filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_f_subsample.fastq.gz raw/filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_f_subsample.fastq.gz -t 20
 ```
 In this example one would use 20 threads and bootstrap 100 times.
 
