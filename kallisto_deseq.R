@@ -339,7 +339,7 @@ cog_tally <- map2(all_contrast_filtered_ipath_ready, contrast_names, function(x,
            relative = ifelse(sig == "down_sig", relative*-1, relative))
 })
 
-# printing 
+# printing  Lets try it out
 
 map2(cog_tally, contrast_names, function(x, names){
   x %>%   
