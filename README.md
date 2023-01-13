@@ -80,7 +80,7 @@ Transfere all raw RNA reads to server and store in folder. This could be called 
 mkdir raw 
 cd raw # transfere to here
 ```
-You can use the example seq files in /seq_test_data
+***You can use the example seq files in /seq_test_data***
 
 Now filter the raw reads using default settings with FastP. This also includes adapter removal.  
 Folder for filtered read files
