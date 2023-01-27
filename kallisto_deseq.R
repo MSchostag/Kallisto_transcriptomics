@@ -215,7 +215,7 @@ map2(count_plots_up, pull(distinct(up_sig_list, contrast)), function(x, name) {
 
 ## extract the count data for the down regulated genes
 count_plots_down <- map(pull(distinct(down_sig_list, contrast)), function(x){
-  genes <- up_sig_list %>% 
+  genes <- down_sig_list %>% 
     filter(contrast == x) %>% 
     pull(row)
   map(genes, function(y){
