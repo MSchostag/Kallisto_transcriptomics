@@ -128,13 +128,16 @@ all_contrast_filtered <- do.call("rbind", all_contrast) %>%
                          log2FoldChange > 2 & padj < 0.01 ~ "up_sig",
                          log2FoldChange < -2 & padj < 0.01 ~ "down_sig",
                          log2FoldChange < 2 & padj < 0.01 & log2FoldChange > -2 ~ "not_rel")) %>% 
-  filter(padj!="") %>% 
-  as_tibble()
+  filter(padj!="") %>%
+  as_tibble() 
 
 ### write the significant and Log2 fold change >2 genes out as csv files and stored in /data
 map2(all_contrast, contrast_names, function(contrast, names){
   write.csv(contrast, here("data", paste0(names, ".csv" )))
 })
+
+
+write.csv(all_contrast_filtered, here("data", "filtered_data.csv"))
 
 
 ####  Volcano plots  ####
@@ -167,7 +170,7 @@ plot_gene <- function(genename){
 }
 
 ### add the gene name of interest between ""
-plot_gene("gene-OL67_RS18380") 
+plot_gene("gene-OL67_RS09020") 
 
 ####  most differential expressed genes  ####
 
@@ -375,3 +378,4 @@ map2(cog_tally, contrast_names, function(x, names){
   
   ggsave(here("figs/COG_plots", paste0("DE COG_categories in ",names, ".pdf")), dpi = 300, units = "cm", width = 20, height = 20, scale = 1)
 })
+
