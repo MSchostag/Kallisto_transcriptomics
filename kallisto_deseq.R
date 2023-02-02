@@ -83,6 +83,16 @@ summary(res)
 
 plotDispEsts(dds) 
 
+# Extracting the count data and export as csv file in data folder
+normalized_counts <- counts(dds, normalized=TRUE) 
+colnames(normalized_counts) <- paste(colnames(normalized_counts),"normalized_counts",sep="_")
+raw_counts <- counts(dds, normalized=FALSE)
+colnames(raw_counts) <- paste(colnames(raw_counts),"raw_counts",sep="_")
+
+counts <- merge(raw_counts, normalized_counts, by="row.names")
+
+write.csv(counts, here("data", "raw_and_normalized_counts.csv"))
+
 # calculate number of hits for each sample
 
 number_hits <-  as.data.frame(txi.kallisto$counts)
@@ -131,14 +141,18 @@ all_contrast_filtered <- do.call("rbind", all_contrast) %>%
   filter(padj!="") %>%
   as_tibble() 
 
-### write the significant and Log2 fold change >2 genes out as csv files and stored in /data
-map2(all_contrast, contrast_names, function(contrast, names){
-  write.csv(contrast, here("data", paste0(names, ".csv" )))
+### write the the complete list of gene with significant and Log2 fold change >2 genes out as csv files and stored in /data
+
+all_contrast_filtered_list <- all_contrast_filtered %>% 
+                              group_by(contrast) %>% 
+                              group_split() %>% 
+                              setNames(sort(unique(all_contrast_filtered$contrast)))
+
+filtered_contrast_names <- sort(unique(all_contrast_filtered$contrast))
+
+map2(all_contrast_filtered_list, filtered_contrast_names, function(contrast, name){
+  write.csv(contrast, here("data", paste0(name, "_filtered", ".csv" )))
 })
-
-
-write.csv(all_contrast_filtered, here("data", "filtered_data.csv"))
-
 
 ####  Volcano plots  ####
 
@@ -146,10 +160,10 @@ volcano_plots <- all_contrast_filtered %>%
   ggplot(aes(x = log2FoldChange, y = -log10(padj), col = sig)) +
   geom_point() +
   theme_bw() +
-  scale_color_manual(values=c("Red", "black", "blue")) +
+  scale_color_manual(values=c("red", "black", "blue")) +
   facet_wrap(.~contrast)
 # save the figure in figs folder
-ggsave(here("figs", "volcano_plots.pdf"), dpi = 300, units = "cm", width = 20, height = 20, scale = 1) #### write dimention
+ggsave(here("figs", "volcano_plots.pdf"), dpi = 300, units = "cm", width = 20, height = 20, scale = 1) #### write dimensions
 
 
 #### Plot the gene of interest ####
