@@ -23,7 +23,6 @@ pacman::p_load(here,vctrs,ggplot2,tximport,tidyverse,DESeq2,dplyr,readr, install
 #####Creating folders one would need####
 
 here() # check that you are the right place
-getwd()
 dir.create(here("figs"),showWarnings = F)
 dir.create(here("figs/significant_genes"),showWarnings = F)
 dir.create(here("figs/COG_plots"),showWarnings = F)
@@ -268,8 +267,10 @@ map2(count_plots_down, pull(distinct(down_sig_list, contrast)), function(x, name
 #import the eggNOG output file - type between ""
 eggnog_file <- "MM_dtjj1h_k.emapper.annotations.tsv"
 
-eggnog_data <- readr::read_tsv(file.path(here(), eggnog_file))  %>% 
-  dplyr::rename(row = query)
+eggnog_data <- readr::read_tsv(file.path(here(), eggnog_file), skip = 4) %>%  
+  dplyr::rename(row = "#query")
+eggnog_data <- head(eggnog_data, nrow(eggnog_data) - 3)
+
 
 # it will give you and error because the last three lines in the tsv file is used and is run info from eggNOG mapper  
 
