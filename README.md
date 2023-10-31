@@ -141,7 +141,7 @@ Create abundance estimates, for each sample:
 kallisto quant -i transcripts.idx -o output -b 100 FORWARD_READ_1_f.fastq.gz REVERSE_READ_1_f.fastq.gz -t 20
 
 Example: 
-kallisto quant -i transcripts.idx -o output/dtdaB_rep_1_72_hrs raw/filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_f_subsample.fastq.gz raw/filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_f_subsample.fastq.gz -t 20
+kallisto quant -i transcripts.idx -o output/dtdaB_rep_1_72_hrs raw/filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_1_f_subsample.fastq.gz -b 100 raw/filtered/SRR20219424_RNAseq_of_Phaeobacter_piscinae_dtdaB_rep_1_72_hrs_fw_reads_2_f_subsample.fastq.gz -t 20
 ```
 In this example one would use 20 threads and bootstrap 100 times.
 
